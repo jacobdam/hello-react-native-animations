@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Animated, PanResponder } from 'react-native';
 
 class DragReleaseReverse extends Component {
+  static title = 'Drag and reverse to original position after releasing';
+
   positionAnim = new Animated.ValueXY();
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: this._handlePanResponderGrant,
+      // onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: Animated.event([
         null,
         { dx: this.positionAnim.x, dy: this.positionAnim.y }
@@ -23,7 +25,13 @@ class DragReleaseReverse extends Component {
   };
 
   _handlePanResponderEnd = (e: Object, gestureState: Object) => {
-    this.positionAnim.flattenOffset();
+    Animated.spring(
+      this.positionAnim,
+      {
+        toValue: { x: 0, y: 0 },
+        useNativeDriver: true
+      }
+    ).start();
   };
 
 
@@ -35,7 +43,7 @@ class DragReleaseReverse extends Component {
           style={[
             styles.draggable,
             {
-              transform: this.positionAnim.getTransform()
+              transform: this.positionAnim.getTranslateTransform()
             }
           ]}
         />

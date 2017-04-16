@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Animated, PanResponder } from 'react-native';
 
 class DragSimple extends Component {
+  static title = 'Simple Drag';
+
   positionAnim = new Animated.ValueXY();
 
   componentWillMount() {
@@ -11,7 +13,7 @@ class DragSimple extends Component {
       onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: Animated.event([
         null,
-        { dx: this.positionAnim.x, dy: this.positionAnim.y }
+        { dx: this.positionAnim.x, dy: this.positionAnim.y },
       ]),
       onPanResponderRelease: this._handlePanResponderEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
